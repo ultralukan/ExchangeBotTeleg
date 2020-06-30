@@ -1,7 +1,7 @@
 from forex_python.converter import CurrencyRates
 import telebot
 
-token = '1334282732:AAH-FaV6KVbAWzoUxHbXvYb96mc8aT19Xfs'
+token = 'your_token'
 bot = telebot.TeleBot(token)
 rate = CurrencyRates().get_rates('RUB')
 currencies = ['USD', 'EUR', 'SEK']
