@@ -1,10 +1,18 @@
-from forex_python.converter import CurrencyRates
 import telebot
+import json
+import requests
+
+
+def parservalute(valute):
+    response = requests.get("https://www.cbr-xml-daily.ru/daily_json.js")
+    data = json.loads(response.text)['Valute']
+    return data[valute]['Value']
+
 
 token = 'your_token'
 bot = telebot.TeleBot(token)
-rate = CurrencyRates().get_rates('RUB')
-currencies = ['USD', 'EUR', 'SEK']
+currencies = ['USD', 'EUR', 'GBP']
+
 
 
 # обработчик команды start
@@ -30,10 +38,11 @@ def send_text(message):
     for name in currencies:
         if message.text == name:
             bot.send_message(message.chat.id,
-                             f'Курс {name} на данный момент составляет: {1 / rate.get(name)} RUB')
+                             f'Курс {name} на данный момент составляет: {parservalute(name)} RUB')
             break
     else:
         bot.send_message(message.chat.id, 'Данной монеты нет в списке')
 
 
 bot.polling()
+
